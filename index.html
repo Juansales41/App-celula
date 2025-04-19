@@ -1,91 +1,60 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório da Célula</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Relatório de Célula</title>
+  <link rel="stylesheet" href="style.css"/>
+
+  <!-- Firebase (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Relatório da Célula</h1>
-        </header>
+  <div class="container">
+    <h1>📋 Relatório de Célula</h1>
 
-        <!-- Formulário de Relatório -->
-        <form id="relatorioForm">
-            <label for="data">Data do Encontro</label>
-            <input type="date" id="data" name="data" required>
+    <!-- Formulário -->
+    <form id="relatorioForm">
+      <label>Data do Encontro: <input type="date" name="data" required /></label>
+      <label>Preenchido por: <input type="text" name="preenchidoPor" required /></label>
+      <label>Homens: <input type="number" name="homens" required /></label>
+      <label>Mulheres: <input type="number" name="mulheres" required /></label>
+      <label>Crianças: <input type="number" name="criancas" required /></label>
+      <label>Convidados: <input type="number" name="convidados" required /></label>
+      <label>Líder: <input type="text" name="lider" required /></label>
+      <label>Vice-líder: <input type="text" name="vice" required /></label>
+      <label>Timóteo: <input type="text" name="timoteo" required /></label>
+      <label>Anfitrião: <input type="text" name="anfitriao" required /></label>
+      <label>Secretária 1: <input type="text" name="secretaria1" required /></label>
+      <label>Secretária 2: <input type="text" name="secretaria2" required /></label>
+      <label>Tema da Palavra: <input type="text" name="temaPalavra" required /></label>
+      <label>Ministrante: <input type="text" name="ministrante" required /></label>
+      <label>Pontos principais: <textarea name="pontosPalavra" required></textarea></label>
 
-            <label for="preenchidoPor">Preenchido por</label>
-            <input type="text" id="preenchidoPor" name="preenchidoPor" required>
+      <button type="submit">💾 Salvar Relatório</button>
+    </form>
 
-            <label for="homens">Quantos homens?</label>
-            <input type="number" id="homens" name="homens" required>
-
-            <label for="mulheres">Quantas mulheres?</label>
-            <input type="number" id="mulheres" name="mulheres" required>
-
-            <label for="criancas">Quantas crianças?</label>
-            <input type="number" id="criancas" name="criancas" required>
-
-            <label for="convidados">Quantos convidados?</label>
-            <input type="number" id="convidados" name="convidados" required>
-
-            <label for="lider">Quem é o líder?</label>
-            <input type="text" id="lider" name="lider" required>
-
-            <label for="vice">Quem é o vice-líder?</label>
-            <input type="text" id="vice" name="vice" required>
-
-            <label for="timoteo">Quem é o Timóteo?</label>
-            <input type="text" id="timoteo" name="timoteo" required>
-
-            <label for="anfitriao">Quem é o anfitrião?</label>
-            <input type="text" id="anfitriao" name="anfitriao" required>
-
-            <label for="secretaria1">Secretária 1</label>
-            <input type="text" id="secretaria1" name="secretaria1" required>
-
-            <label for="secretaria2">Secretária 2</label>
-            <input type="text" id="secretaria2" name="secretaria2" required>
-
-            <label for="temaPalavra">Tema da Palavra</label>
-            <input type="text" id="temaPalavra" name="temaPalavra" required>
-
-            <label for="ministrante">Quem ministrou a Palavra?</label>
-            <input type="text" id="ministrante" name="ministrante" required>
-
-            <label for="pontosPalavra">Pontos principais da Palavra</label>
-            <textarea id="pontosPalavra" name="pontosPalavra" required></textarea>
-
-            <button type="submit">Salvar Relatório</button>
-        </form>
-
-        <!-- Lista de Relatórios -->
-        <div class="relatorios-section">
-            <h2>Relatórios Salvos</h2>
-            <ul id="listaRelatorios"></ul>
-        </div>
-
-        <!-- Botão para Baixar Relatórios em CSV -->
-        <button class="download-btn" onclick="baixarCSV()">Baixar Planilha</button>
-
-        <!-- Modal para Detalhes -->
-        <div id="modal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <div id="detalhesRelatorio"></div>
-            </div>
-        </div>
-
-        <!-- Link para Compartilhar -->
-        <div class="share-section">
-            <button id="shareLinkBtn" class="share-btn">Compartilhar Link</button>
-            <input type="text" id="shareLinkInput" class="share-input" readonly />
-        </div>
+    <!-- Botões extras -->
+    <div class="botoes-secundarios">
+      <button id="downloadCSVBtn">⬇️ Baixar CSV</button>
+      <input type="text" id="shareLinkInput" readonly />
     </div>
 
-    <script src="script.js"></script>
+    <!-- Lista de relatórios -->
+    <h2>🗂️ Relatórios Salvos</h2>
+    <ul id="listaRelatorios"></ul>
+  </div>
+
+  <!-- Modal para detalhes -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <div id="detalhesRelatorio"></div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="script.js"></script>
 </body>
 </html>
